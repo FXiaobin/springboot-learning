@@ -15,13 +15,22 @@ public class ResponseInfo {
         return responseInfo;
     }
 
-    public static ResponseInfo responseInfoSuccess(Object data) {
+    public static ResponseInfo responseInfoResult(Boolean isSuc, Object data) {
         ResponseInfo responseInfo = new ResponseInfo();
-        responseInfo.code = "200";
-        responseInfo.msg = "success";
+        if (isSuc) {
+            responseInfo.code = "200";
+            responseInfo.msg = "操作成功";
+        }else{
+            responseInfo.code = "0";
+            responseInfo.msg = "操作失败";
+        }
         responseInfo.data = data;
 
         return responseInfo;
+    }
+
+    public static ResponseInfo responseInfoSuccess(Object data) {
+        return ResponseInfo.responseInfoResult(true, data);
     }
 
 

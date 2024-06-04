@@ -13,7 +13,7 @@ public class User {
     private String userName;
     private String nickName;
     private String password;
-    private String gender;
+    private Integer gender;
     private Date birthDate;
     private String avatar;
     private String mobile;

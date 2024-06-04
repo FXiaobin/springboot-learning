@@ -6,6 +6,105 @@
 <!--    xxxMapper.xml     -->
 <mapper namespace="com.example.springboot_learning.mapper.UserMapper">
 
+    <insert id="addUser" parameterType="user">
+        --      selectKey是不支持批量插入获取主键值的
+        --      用来获取自增主键id的值并进行设置  AFTER表示先执行插入操作后执行selectKey中的sql，然后再把获取到的值进行设置
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            --          返回最近一次插入的id
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        insert into myLearning.user(
+            user_id,
+            user_name,
+            nick_name,
+            password,
+            gender,
+            birth_date,
+            avatar,
+            mobile,
+            email,
+            sign,
+            city,
+            status,
+            membership_level,
+            identity_type,
+            login_time,
+            create_time,
+            update_time
+        )
+        values(
+            #{userId},
+            #{userName},
+            #{nickName},
+            #{password},
+            #{gender},
+            #{birthDate},
+            #{avatar},
+            #{mobile},
+            #{email},
+            #{sign},
+            #{city},
+            #{status},
+            #{membershipLevel},
+            #{identityType},
+            #{loginTime},
+            #{createTime},
+            #{updateTime}
+        )
+
+    </insert>
+
+    <update id="updateUser" parameterType="user">
+        update myLearning.user
+        <set>
+            <if test="userName != null">
+                user_name = #{userName},
+            </if>
+            <if test="nickName != null">
+                nick_name = #{nickName},
+            </if>
+<!--            <if test="password != null">-->
+<!--                password = #{password},-->
+<!--            </if>-->
+            <if test="gender != null">
+                gender = #{gender},
+            </if>
+            <if test="birthDate != null">
+                birth_date = #{birthDate},
+            </if>
+            <if test="avatar != null">
+                avatar = #{avatar},
+            </if>
+            <if test="mobile != null">
+                mobile = #{mobile},
+            </if>
+            <if test="email != null">
+                email = #{email},
+            </if>
+            <if test="sign != null">
+                sign = #{sign},
+            </if>
+            <if test="city != null">
+                city = #{city},
+            </if>
+--             状态和会员等级不推荐在这里更新，因为用户更新用不到这些字段，后台更新推荐单独写接口来更新敏感字段
+<!--            <if test="status != null">-->
+<!--                status = #{status},-->
+<!--            </if>-->
+<!--            <if test="membershipLevel != null">-->
+<!--                membership_level = #{membershipLevel},-->
+<!--            </if>-->
+            <if test="loginTime != null">
+                login_time = #{loginTime},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where user_id = #{userId}
+    </update>
+
     <select id="selectAllUserList" resultType="com.example.springboot_learning.pojo.User">
         select * from myLearning.user
     </select>
@@ -13,9 +112,39 @@
     <select id="selectUserByUserId" resultType="user">
         select * from myLearning.user
         <where>
-            user_id = #{userId}
+            <if test="userId != null">
+                user_id = #{userId}
+            </if>
         </where>
         limit 1
     </select>
+
+    <select id="selecUserByUserParamInfo" resultType="user">
+        select * from myLearning.user
+        <where>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="userName != null">
+                and user_name = #{userName}
+            </if>
+            <if test="mobile != null">
+                and mobile = #{mobile}
+            </if>
+            <if test="email != null">
+                and email = #{email}
+            </if>
+        </where>
+
+    </select>
+
+<!--    禁用用户 将状态设置为-1 -->
+    <update id="disabledUser">
+        update myLearning.user
+        set status = -1
+        where user_id = #{userId}
+    </update>
+
+
 
 </mapper>

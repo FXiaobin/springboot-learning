@@ -3,6 +3,7 @@ package com.example.springboot_learning.serviceImpl;
 import com.example.springboot_learning.mapper.UserMapper;
 import com.example.springboot_learning.model.user.UserInfo;
 import com.example.springboot_learning.model.user.UserParamInfo;
+import com.example.springboot_learning.model.user.UserParamLoginInfo;
 import com.example.springboot_learning.pojo.User;
 import com.example.springboot_learning.service.UserService;
 import com.example.springboot_learning.utils.commonUtils.CommonUtils;
@@ -59,6 +60,22 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserInfo> selecUserByUserParamInfo(UserParamInfo userParamInfo) {
+        List<User> userList = userMapper.selecUserByUserParamInfo(userParamInfo);
+        List<UserInfo> userInfoList = UserConvertUtils.userInfoListByUserList(userList);
+        return userInfoList;
+    }
+
+    @Override
+    public List<UserInfo> loginWithUserNamePassword(UserParamLoginInfo userParamLoginInfo) {
+        if (userParamLoginInfo.getUserName() == null) {
+
+        }
+        if (userParamLoginInfo.getPassword() == null) {
+
+        }
+        UserParamInfo userParamInfo = new UserParamInfo();
+        userParamInfo.setUserName(userParamLoginInfo.getUserName());
+        userParamInfo.setPassword(userParamLoginInfo.getPassword());
         List<User> userList = userMapper.selecUserByUserParamInfo(userParamInfo);
         List<UserInfo> userInfoList = UserConvertUtils.userInfoListByUserList(userList);
         return userInfoList;

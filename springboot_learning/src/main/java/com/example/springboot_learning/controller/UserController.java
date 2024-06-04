@@ -3,6 +3,7 @@ package com.example.springboot_learning.controller;
 import com.example.springboot_learning.model.responseInfo.ResponseInfo;
 import com.example.springboot_learning.model.user.UserInfo;
 import com.example.springboot_learning.model.user.UserParamInfo;
+import com.example.springboot_learning.model.user.UserParamLoginInfo;
 import com.example.springboot_learning.pojo.User;
 import com.example.springboot_learning.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,6 +80,13 @@ public class UserController {
         return responseInfo;
     }
 
+    @RequestMapping(value = "/loginWithUserNamePassword", method = RequestMethod.POST)
+    public ResponseInfo loginWithUserNamePassword(@RequestBody UserParamLoginInfo userParamLoginInfo) {
+        List<UserInfo> userInfoList = userService.loginWithUserNamePassword(userParamLoginInfo);
+        ResponseInfo responseInfo = ResponseInfo.responseInfoSuccess(userInfoList);
+
+        return responseInfo;
+    }
 
 
 

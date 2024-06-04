@@ -8,7 +8,7 @@ public class DemoController {
 
     /**
      * 测试api
-     * http://localhost:8080/demo
+     * http://localhost:9091/demo
      * @return
      */
     @RequestMapping("/demo")

@@ -55,6 +55,8 @@
 
     </insert>
 
+    <!--    更新操作  注意：if条件中要加逗号-->
+    <!--    set 元素会动态地在行首插入 SET 关键字，并会删掉额外的逗号（这些逗号是在使用条件语句给列赋值时引入的）-->
     <update id="updateUser" parameterType="user">
         update myLearning.user
         <set>
@@ -109,6 +111,7 @@
         select * from myLearning.user
     </select>
 
+    <!--    where 元素只会在子元素返回任何内容的情况下才插入 “WHERE” 子句。而且，若子句的开头为 “AND” 或 “OR”，where 元素也会将它们去除。-->
     <select id="selectUserByUserId" resultType="user">
         select * from myLearning.user
         <where>

@@ -22,5 +22,5 @@ public interface UserService {
 
     List<UserInfo> selecUserByUserParamInfo(UserParamInfo userParamInfo);
 
-    List<UserInfo> loginWithUserNamePassword(UserParamLoginInfo userParamLoginInfo);
+    UserInfo loginWithUserNamePassword(UserParamLoginInfo userParamLoginInfo);
 }

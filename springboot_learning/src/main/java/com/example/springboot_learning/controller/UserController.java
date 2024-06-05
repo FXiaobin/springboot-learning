@@ -82,8 +82,8 @@ public class UserController {
 
     @RequestMapping(value = "/loginWithUserNamePassword", method = RequestMethod.POST)
     public ResponseInfo loginWithUserNamePassword(@RequestBody UserParamLoginInfo userParamLoginInfo) {
-        List<UserInfo> userInfoList = userService.loginWithUserNamePassword(userParamLoginInfo);
-        ResponseInfo responseInfo = ResponseInfo.responseInfoSuccess(userInfoList);
+        UserInfo userInfo = userService.loginWithUserNamePassword(userParamLoginInfo);
+        ResponseInfo responseInfo = ResponseInfo.responseInfoSuccess(userInfo);
 
         return responseInfo;
     }

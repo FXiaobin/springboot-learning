@@ -6,6 +6,8 @@ import com.example.springboot_learning.model.user.UserParamInfo;
 import com.example.springboot_learning.model.user.UserParamLoginInfo;
 import com.example.springboot_learning.pojo.User;
 import com.example.springboot_learning.service.UserService;
+import com.example.springboot_learning.utils.baseErrorException.BaseErrorEnum;
+import com.example.springboot_learning.utils.baseErrorException.BaseErrorException;
 import com.example.springboot_learning.utils.commonUtils.CommonUtils;
 import com.example.springboot_learning.utils.convertUtils.UserConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +36,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public int disabledUser(String userId) {
         if (userId == null) {
-
+            throw new BaseErrorException(BaseErrorEnum.USER_ID__NOT_EMPTY);
         }
         return userMapper.disabledUser(userId);
     }
 
     @Override
     public int updateUser(User user) {
+        if (user.getUserId() == null) {
+            throw new BaseErrorException(BaseErrorEnum.USER_ID__NOT_EMPTY);
+        }
         user.setUpdateTime(new Date());
         return userMapper.updateUser(user);
     }
@@ -54,6 +59,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserInfo selectUserByUserId(String userId) {
+        if (userId == null) {
+            throw new BaseErrorException(BaseErrorEnum.USER_ID__NOT_EMPTY);
+        }
         User user = userMapper.selectUserByUserId(userId);
         return  UserConvertUtils.userInfoByUser(user);
     }
@@ -66,19 +74,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserInfo> loginWithUserNamePassword(UserParamLoginInfo userParamLoginInfo) {
+    public UserInfo loginWithUserNamePassword(UserParamLoginInfo userParamLoginInfo) {
         if (userParamLoginInfo.getUserName() == null) {
-
+            throw new BaseErrorException(BaseErrorEnum.USERNAME_NOT_EMPTY);
         }
         if (userParamLoginInfo.getPassword() == null) {
-
+            throw new BaseErrorException(BaseErrorEnum.PASSWORD_NOT_EMPTY);
         }
         UserParamInfo userParamInfo = new UserParamInfo();
         userParamInfo.setUserName(userParamLoginInfo.getUserName());
         userParamInfo.setPassword(userParamLoginInfo.getPassword());
         List<User> userList = userMapper.selecUserByUserParamInfo(userParamInfo);
-        List<UserInfo> userInfoList = UserConvertUtils.userInfoListByUserList(userList);
-        return userInfoList;
+        if (userList == null || userList.size() == 0) {
+            throw new BaseErrorException(BaseErrorEnum.DATA_NOT_EXSIST);
+        }
+        User user = userList.get(0);
+        UserInfo userInfo = UserConvertUtils.userInfoByUser(user);
+        return userInfo;
     }
 
 

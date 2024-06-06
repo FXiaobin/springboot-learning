@@ -23,4 +23,6 @@ public interface UserService {
     List<UserInfo> selecUserByUserParamInfo(UserParamInfo userParamInfo);
 
     UserInfo loginWithUserNamePassword(UserParamLoginInfo userParamLoginInfo);
+
+    int deleteUserByUserId(String userId);
 }

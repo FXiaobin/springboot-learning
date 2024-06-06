@@ -151,6 +151,10 @@
         where user_id = #{userId}
     </update>
 
+    <delete id="deleteUserById">
+        delete from myLearning.user
+        where user_id = #{userId}
+    </delete>
 
 
 </mapper>

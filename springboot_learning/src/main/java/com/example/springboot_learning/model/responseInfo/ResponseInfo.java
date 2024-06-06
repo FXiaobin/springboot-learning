@@ -2,14 +2,18 @@ package com.example.springboot_learning.model.responseInfo;
 
 import com.example.springboot_learning.utils.baseErrorException.BaseErrorEnum;
 import com.example.springboot_learning.utils.baseErrorException.BaseErrorException;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(name = "请求响应结果")
 public class ResponseInfo {
-
 
 //    这里的属性需要用public， 不然会报错
 
+    @Schema(description = "响应码")
     public String code;
+    @Schema(description = "响应描述")
     public String msg;
+    @Schema(description = "响应数据")
     public Object data;
 
     /**

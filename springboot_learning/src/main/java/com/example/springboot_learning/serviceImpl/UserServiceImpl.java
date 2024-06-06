@@ -93,5 +93,11 @@ public class UserServiceImpl implements UserService {
         return userInfo;
     }
 
-
+    @Override
+    public int deleteUserByUserId(String userId) {
+        if (userId == null) {
+            throw new BaseErrorException(BaseErrorEnum.USER_ID__NOT_EMPTY);
+        }
+        return userMapper.deleteUserByUserId(userId);
+    }
 }

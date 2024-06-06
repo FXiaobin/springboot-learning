@@ -21,5 +21,6 @@ public interface UserMapper {
 
     List<User> selecUserByUserParamInfo(UserParamInfo userParamInfo);
 
+    int deleteUserByUserId(String userId);
 
 }

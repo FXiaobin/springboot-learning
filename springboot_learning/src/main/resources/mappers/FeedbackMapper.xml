@@ -104,10 +104,10 @@
     <select id="selecFeedbackByFeedbackParamInfo" resultType="feedback">
         select * from myLearning.feedback
         <where>
-            <if test="title != null">
-                and title like #{feedbackId}
+            <if test="title != null and title != ''">
+                and title like #{title}
             </if>
-            <if test="content != null">
+            <if test="content != null and content != ''">
                 and content like #{content}
             </if>
             <if test="questionTypeId != null">

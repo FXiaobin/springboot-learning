@@ -75,7 +75,18 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public List<FeedbackInfo> selecFeedbackByFeedbackParamInfo(FeedbackParamInfo feedbackParamInfo) {
-        List<Feedback> feedbackList = feedbackMapper.selecFeedbackByFeedbackParamInfo(feedbackParamInfo);
+        FeedbackParamInfo paramInfo = new FeedbackParamInfo();
+        paramInfo.setFeedbackId(feedbackParamInfo.getFeedbackId());
+        paramInfo.setContactEmail(feedbackParamInfo.getContactEmail());
+        paramInfo.setContactTel(feedbackParamInfo.getContactTel());
+        paramInfo.setQuestionTypeId(feedbackParamInfo.getQuestionTypeId());
+        if (feedbackParamInfo.getTitle() != null && !feedbackParamInfo.getTitle().isEmpty()) {
+            paramInfo.setTitle("%" + feedbackParamInfo.getTitle() + "%");
+        }
+        if (feedbackParamInfo.getContent() != null && !feedbackParamInfo.getContent().isEmpty()) {
+            paramInfo.setContent("%" + feedbackParamInfo.getContent() + "%");
+        }
+        List<Feedback> feedbackList = feedbackMapper.selecFeedbackByFeedbackParamInfo(paramInfo);
         List<FeedbackInfo> feedbackInfoList = FeedbackConvertUtils.feedbackInfoListByFeedbackList(feedbackList);
         return feedbackInfoList;
     }

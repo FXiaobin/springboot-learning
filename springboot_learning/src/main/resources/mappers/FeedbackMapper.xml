@@ -6,5 +6,133 @@
 <!--    FeedbackMapperMapper.xml     -->
 <mapper namespace="com.example.springboot_learning.mapper.FeedbackMapper">
 
+    <insert id="addFeedback" parameterType="feedback">
+        --      selectKey是不支持批量插入获取主键值的
+        --      用来获取自增主键id的值并进行设置  AFTER表示先执行插入操作后执行selectKey中的sql，然后再把获取到的值进行设置
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            --          返回最近一次插入的id
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        insert into myLearning.feedback(
+            feedback_id,
+            title,
+            content,
+            question_type_id,
+            create_user,
+            contact_email,
+            contact_tel,
+            image_urls,
+            status,
+            sort,
+            create_time,
+            update_time
+        )
+        values(
+            #{feedbackId},
+            #{title},
+            #{content},
+            #{questionTypeId},
+            #{createUser},
+            #{contactEmail},
+            #{contactTel},
+            #{imageUrls},
+            #{status},
+            #{sort},
+            #{createTime},
+            #{updateTime}
+        )
+
+    </insert>
+
+    <!--    更新操作  注意：if条件中要加逗号-->
+    <!--    set 元素会动态地在行首插入 SET 关键字，并会删掉额外的逗号（这些逗号是在使用条件语句给列赋值时引入的）-->
+    <update id="updateFeedback" parameterType="feedback">
+        update myLearning.feedback
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+           
+            <if test="questionTypeId != null">
+                question_type_id = #{questionTypeId},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser},
+            </if>
+            <if test="contactEmail != null">
+                contact_email = #{contactEmail},
+            </if>
+            <if test="contactTel != null">
+                contact_tel = #{contactTel},
+            </if>
+            <if test="imageUrls != null">
+                image_urls = #{imageUrls},
+            </if>
+--             敏感字段 不推荐在这里更新 后台人员单独写接口来更新这两个敏感字段
+<!--            <if test="status != null">-->
+<!--                status = #{status},-->
+<!--            </if>-->
+<!--            <if test="sort != null">-->
+<!--                sort = #{sort},-->
+<!--            </if>-->
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where feedback_id = #{feedbackId}
+    </update>
+
+    <select id="selectAllFeedbackList" resultType="com.example.springboot_learning.pojo.Feedback">
+        select * from myLearning.feedback
+    </select>
+
+    <!--    where 元素只会在子元素返回任何内容的情况下才插入 “WHERE” 子句。而且，若子句的开头为 “AND” 或 “OR”，where 元素也会将它们去除。-->
+    <select id="selectFeedbackByFeedbackId" resultType="feedback">
+        select * from myLearning.feedback
+        <where>
+            <if test="feedbackId != null">
+                feedback_id = #{feedbackId}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <select id="selecFeedbackByFeedbackParamInfo" resultType="feedback">
+        select * from myLearning.feedback
+        <where>
+            <if test="title != null">
+                and title like #{feedbackId}
+            </if>
+            <if test="content != null">
+                and content like #{content}
+            </if>
+            <if test="questionTypeId != null">
+                and question_type_id = #{questionTypeId}
+            </if>
+            <if test="contactEmail != null">
+                and contact_email = #{contactEmail}
+            </if>
+            <if test="contactTel != null">
+                and contact_tel = #{contactTel}
+            </if>
+        </where>
+
+    </select>
+
+    <!--    禁用用户 将状态设置为-1 -->
+    <update id="disabledFeedback">
+        update myLearning.feedback
+        set status = -1
+        where feedback_id = #{feedbackId}
+    </update>
+
+    <delete id="deleteFeedbackById">
+        delete from myLearning.feedback
+        where feedback_id = #{feedbackId}
+    </delete>
 
 </mapper>

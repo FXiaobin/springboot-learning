@@ -13,10 +13,8 @@ import com.example.springboot_learning.utils.convertUtils.UserConvertUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -38,6 +36,10 @@ public class UserServiceImpl implements UserService {
         if (userId == null) {
             throw new BaseErrorException(BaseErrorEnum.USER_ID__NOT_EMPTY);
         }
+        User updateUser = userMapper.selectUserByUserId(userId);
+        if (updateUser == null) {
+            throw new BaseErrorException(BaseErrorEnum.DATA_NOT_EXSIST);
+        }
         return userMapper.disabledUser(userId);
     }
 
@@ -45,6 +47,10 @@ public class UserServiceImpl implements UserService {
     public int updateUser(User user) {
         if (user.getUserId() == null) {
             throw new BaseErrorException(BaseErrorEnum.USER_ID__NOT_EMPTY);
+        }
+        User updateUser = userMapper.selectUserByUserId(user.getUserId());
+        if (updateUser == null) {
+            throw new BaseErrorException(BaseErrorEnum.DATA_NOT_EXSIST);
         }
         user.setUpdateTime(new Date());
         return userMapper.updateUser(user);

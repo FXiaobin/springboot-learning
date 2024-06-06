@@ -18,6 +18,7 @@ public class FeedbackConvertUtils {
         FeedbackInfo feedbackInfo = new FeedbackInfo();
         feedbackInfo.setId(feedback.getId());
         feedbackInfo.setFeedbackId(feedback.getFeedbackId());
+        feedbackInfo.setTitle(feedback.getTitle());
         feedbackInfo.setContent(feedback.getContent());
         feedbackInfo.setQuestionTypeId(feedback.getQuestionTypeId());
         feedbackInfo.setCreateUser(feedback.getCreateUser());

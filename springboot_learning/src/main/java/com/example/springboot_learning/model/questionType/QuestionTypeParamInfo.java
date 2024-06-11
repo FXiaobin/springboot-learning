@@ -6,7 +6,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-@Schema(name = "意见反馈问题类型相关接口参数信息 QuestionTypeInfo")
+@Schema(name = "意见反馈问题类型相关接口参数信息 QuestionTypeParamInfo")
 public class QuestionTypeParamInfo {
 
     @Schema(description = "问题类型名称")

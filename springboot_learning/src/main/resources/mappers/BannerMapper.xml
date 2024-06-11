@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--    BannerMapperMapper.xml     -->
+<mapper namespace="com.example.springboot_learning.mapper.BannerMapper">
+
+    <insert id="addBanner" parameterType="banner">
+        --      selectKey是不支持批量插入获取主键值的
+        --      用来获取自增主键id的值并进行设置  AFTER表示先执行插入操作后执行selectKey中的sql，然后再把获取到的值进行设置
+        <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+            --          返回最近一次插入的id
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        insert into myLearning.banner(
+        banner_id,
+        title,
+        img,
+        url,
+        type,
+        status,
+        sort,
+        create_user,
+        create_time,
+        update_time
+        )
+        values(
+        #{bannerId},
+        #{title},
+        #{img},
+        #{url},
+        #{type},
+        #{status},
+        #{sort},
+        #{createUser},
+        #{createTime},
+        #{updateTime}
+        )
+
+    </insert>
+
+    <!--    更新操作  注意：if条件中要加逗号-->
+    <!--    set 元素会动态地在行首插入 SET 关键字，并会删掉额外的逗号（这些逗号是在使用条件语句给列赋值时引入的）-->
+    <update id="updateBanner" parameterType="banner">
+        update myLearning.banner
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            <if test="url != null">
+                url = #{url},
+            </if>
+            <if test="type != null">
+                type = #{type},
+            </if>
+            <if test="createUser != null">
+                create_user = #{createUser},
+            </if>
+
+            --             敏感字段 不推荐在这里更新 后台人员单独写接口来更新这两个敏感字段
+            <!--            <if test="status != null">-->
+            <!--                status = #{status},-->
+            <!--            </if>-->
+            <!--            <if test="sort != null">-->
+            <!--                sort = #{sort},-->
+            <!--            </if>-->
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where banner_id = #{bannerId}
+    </update>
+
+    <select id="selectAllBannerList" resultType="com.example.springboot_learning.pojo.Banner">
+        select * from myLearning.banner order by create_time desc
+    </select>
+
+    <!--    where 元素只会在子元素返回任何内容的情况下才插入 “WHERE” 子句。而且，若子句的开头为 “AND” 或 “OR”，where 元素也会将它们去除。-->
+    <select id="selectBannerByBannerId" resultType="banner">
+        select * from myLearning.banner
+        <where>
+            <if test="bannerId != null">
+                banner_id = #{bannerId}
+            </if>
+        </where>
+        limit 1
+    </select>
+
+    <select id="selecBannerByBannerParamInfo" resultType="banner">
+        select * from myLearning.banner
+        <where>
+            <if test="bannerId != null">
+                and banner_id = #{bannerId}
+            </if>
+            <if test="title != null and title != ''">
+                and title like #{title}
+            </if>
+            <if test="type != null">
+                and type = #{type}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+            <if test="createUser != null">
+                and create_user = #{createUser}
+            </if>
+        </where>
+        order by create_time desc
+
+    </select>
+
+    <!--    禁用用户 将状态设置为-1 -->
+    <update id="disabledBanner">
+        update myLearning.banner
+        set status = -1
+        where banner_id = #{bannerId}
+    </update>
+
+    <delete id="deleteBannerById">
+        delete from myLearning.banner
+        where banner_id = #{bannerId}
+    </delete>
+
+</mapper>

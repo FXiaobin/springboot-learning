@@ -1,11 +1,12 @@
 package com.example.springboot_learning.model.feedback;
 
+import com.example.springboot_learning.model.responseInfo.PageParamsInfo;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
 @Schema(name = "feedback - FeedbackParamInfo 接口参数")
-public class FeedbackParamInfo {
+public class FeedbackParamInfo extends PageParamsInfo {
 
     @Schema(description = "意见反馈id")
     private String feedbackId;

@@ -2,7 +2,10 @@ package com.example.springboot_learning.service;
 
 import com.example.springboot_learning.model.feedback.FeedbackInfo;
 import com.example.springboot_learning.model.feedback.FeedbackParamInfo;
+import com.example.springboot_learning.model.responseInfo.PageParamsInfo;
+import com.example.springboot_learning.model.responseInfo.ResponseInfo;
 import com.example.springboot_learning.pojo.Feedback;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -16,9 +19,9 @@ public interface FeedbackService {
 
     int disabledFeedback(String feedbackId);
 
-    List<FeedbackInfo> selectAllFeedbackList();
+    ResponseInfo selectAllFeedbackList(PageParamsInfo pageParamsInfo);
 
-    List<FeedbackInfo> selecFeedbackByFeedbackParamInfo(FeedbackParamInfo feedbackParamInfo);
+    ResponseInfo selecFeedbackByFeedbackParamInfo(FeedbackParamInfo feedbackParamInfo);
 
     int deleteFeedbackByFeedbackId(String feedbackId);
 }

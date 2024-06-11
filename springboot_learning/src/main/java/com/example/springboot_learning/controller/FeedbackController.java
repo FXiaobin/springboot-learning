@@ -1,11 +1,14 @@
 package com.example.springboot_learning.controller;
 
 
+import com.example.springboot_learning.model.responseInfo.PageParamsInfo;
 import com.example.springboot_learning.model.responseInfo.ResponseInfo;
 import com.example.springboot_learning.model.feedback.FeedbackInfo;
 import com.example.springboot_learning.model.feedback.FeedbackParamInfo;
 import com.example.springboot_learning.pojo.Feedback;
 import com.example.springboot_learning.service.FeedbackService;
+import com.example.springboot_learning.utils.convertUtils.FeedbackConvertUtils;
+import com.github.pagehelper.PageInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,20 +80,18 @@ public class FeedbackController {
 
     @Operation(summary = "意见反馈-查询所有意见反馈")
     @RequestMapping(value = "/selectAllFeedbackList", method = RequestMethod.POST)
-    public ResponseInfo selectAllFeedbackList() {
-        List<FeedbackInfo> feedbackInfoList = feedbackService.selectAllFeedbackList();
-        ResponseInfo responseInfo = ResponseInfo.responseInfoSuccess(feedbackInfoList);
+    public ResponseInfo selectAllFeedbackList(PageParamsInfo pageParamsInfo) {
+//        PageInfo<Feedback> pageInfo =
+//        List<FeedbackInfo> feedbackInfoList = FeedbackConvertUtils.feedbackInfoListByFeedbackList(pageInfo.getList());
+//        ResponseInfo responseInfo = ResponseInfo.responseInfoSuccess(feedbackInfoList);
 
-        return responseInfo;
+        return feedbackService.selectAllFeedbackList(pageParamsInfo);
     }
 
     @Operation(summary = "意见反馈-按条件查询意见反馈信息")
     @RequestMapping(value = "/selecFeedbackByFeedbackParamInfo", method = RequestMethod.POST)
     public ResponseInfo selecFeedbackByFeedbackParamInfo(@RequestBody FeedbackParamInfo feedbackParamInfo) {
-        List<FeedbackInfo> feedbackInfoList = feedbackService.selecFeedbackByFeedbackParamInfo(feedbackParamInfo);
-        ResponseInfo responseInfo = ResponseInfo.responseInfoSuccess(feedbackInfoList);
-
-        return responseInfo;
+        return feedbackService.selecFeedbackByFeedbackParamInfo(feedbackParamInfo);
     }
 
     @Operation(summary = "意见反馈-意见反馈永久删除 慎用！！！")

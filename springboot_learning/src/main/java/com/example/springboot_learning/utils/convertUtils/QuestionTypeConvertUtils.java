@@ -14,10 +14,8 @@ public class QuestionTypeConvertUtils {
      * @return questionTypeInfo
      */
     public static QuestionTypeInfo questionTypeInfoByQuestionType(QuestionType questionType) {
-
         QuestionTypeInfo questionTypeInfo = new QuestionTypeInfo();
         BeanUtils.copyProperties(questionType, questionTypeInfo);
-
         return questionTypeInfo;
     }
 

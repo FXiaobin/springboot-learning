@@ -120,7 +120,6 @@
                 and contact_tel = #{contactTel}
             </if>
         </where>
---         limit #{start},#{pageSize}
         order by create_time desc
 
     </select>

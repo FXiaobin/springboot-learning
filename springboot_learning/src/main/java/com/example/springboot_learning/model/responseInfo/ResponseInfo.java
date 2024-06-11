@@ -15,6 +15,8 @@ public class ResponseInfo {
     public String msg;
     @Schema(description = "响应数据")
     public Object data;
+    @Schema(description = "分页响应数据")
+    public PageResponseInfo pageInfo;
 
     /**
      * 通用返回数据格式
@@ -23,11 +25,13 @@ public class ResponseInfo {
      * @param data
      * @return  ResponseInfo
      */
-    public static ResponseInfo responseInfo(String code, String msg, Object data) {
+    public static ResponseInfo responseInfo(String code, String msg, Object data, PageResponseInfo pageResponseInfo) {
         ResponseInfo responseInfo = new ResponseInfo();
         responseInfo.code = code;
         responseInfo.msg = msg;
         responseInfo.data = data;
+        responseInfo.pageInfo = pageResponseInfo;
+
         return responseInfo;
     }
 
@@ -37,7 +41,16 @@ public class ResponseInfo {
      * @return  ResponseInfo
      */
     public static ResponseInfo responseInfoSuccess(Object data) {
-        return ResponseInfo.responseInfo(BaseErrorEnum.OPERATION_SUCCESS.getCode(), BaseErrorEnum.OPERATION_SUCCESS.getMsg(), data);
+        return ResponseInfo.responseInfoSuccess(data, null);
+    }
+
+    /**
+     *  操作成功
+     * @param data
+     * @return  ResponseInfo
+     */
+    public static ResponseInfo responseInfoSuccess(Object data, PageResponseInfo pageResponseInfo) {
+        return ResponseInfo.responseInfo(BaseErrorEnum.OPERATION_SUCCESS.getCode(), BaseErrorEnum.OPERATION_SUCCESS.getMsg(), data, pageResponseInfo);
     }
 
     /**
@@ -47,6 +60,16 @@ public class ResponseInfo {
      * @return  ResponseInfo
      */
     public static ResponseInfo responseInfoResult(Boolean isSuc, Object data) {
+        return ResponseInfo.responseInfoResult(isSuc, data, null);
+    }
+
+    /**
+     * 操作成功 / 操作失败
+     * @param isSuc 是否成功
+     * @param data
+     * @return  ResponseInfo
+     */
+    public static ResponseInfo responseInfoResult(Boolean isSuc, Object data, PageResponseInfo pageResponseInfo) {
         ResponseInfo responseInfo = new ResponseInfo();
         if (isSuc) {
             // 操作成功
@@ -58,6 +81,8 @@ public class ResponseInfo {
             responseInfo.msg = BaseErrorEnum.OPERATION_FAIL.getMsg();
         }
         responseInfo.data = data;
+        responseInfo.pageInfo = pageResponseInfo;
+
         return responseInfo;
     }
 
@@ -68,7 +93,7 @@ public class ResponseInfo {
      * @return  ResponseInfo
      */
     public static ResponseInfo responseInfoException(BaseErrorException e) {
-        return ResponseInfo.responseInfo(e.getCode(), e.getMsg(), null);
+        return ResponseInfo.responseInfo(e.getCode(), e.getMsg(), null, null);
     }
 
 

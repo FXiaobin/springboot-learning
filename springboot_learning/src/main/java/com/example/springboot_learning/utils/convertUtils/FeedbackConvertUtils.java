@@ -39,7 +39,6 @@ public class FeedbackConvertUtils {
      * @return feedbackInfoList
      */
     public static List<FeedbackInfo> feedbackInfoListByFeedbackList(List<Feedback> feedbackList) {
-
         List<FeedbackInfo> feedbackInfoList = new ArrayList<>();
         for (Feedback feedback : feedbackList) {
             FeedbackInfo feedbackInfo = feedbackInfoByFeedback(feedback);
@@ -47,5 +46,4 @@ public class FeedbackConvertUtils {
         }
         return feedbackInfoList;
     }
-    
 }

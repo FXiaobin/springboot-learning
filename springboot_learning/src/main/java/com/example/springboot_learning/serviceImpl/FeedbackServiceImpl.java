@@ -29,6 +29,10 @@ public class FeedbackServiceImpl implements FeedbackService {
         feedback.setCreateTime(new Date());
         feedback.setUpdateTime(new Date());
 
+        if (feedback.getContactEmail() == null || feedback.getTitle() == null || feedback.getQuestionTypeId() == null) {
+            throw new BaseErrorException(BaseErrorEnum.PARAMETER_ERROR);
+        }
+
         return feedbackMapper.addFeedback(feedback);
     }
 

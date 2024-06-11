@@ -86,6 +86,12 @@
     <select id="selecQuestionTypeByQuestionTypeParamInfo" resultType="questionType">
         select * from myLearning.question_type
         <where>
+
+<!--            <if test="name!=null and name!=''">-->
+<!--                &#45;&#45;             动态拼接-->
+<!--                and name like concat('%',#{name},'%')-->
+<!--            </if>-->
+
             <if test="title != null and title != ''">
                 and title like #{title}
             </if>

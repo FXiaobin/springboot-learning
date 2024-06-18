@@ -16,6 +16,8 @@ public interface UserService {
 
     int updateUser(User user);
 
+    int updateUserToken(User user);
+
     List<UserInfo> selectAllUserList();
 
     UserInfo selectUserByUserId(String userId);

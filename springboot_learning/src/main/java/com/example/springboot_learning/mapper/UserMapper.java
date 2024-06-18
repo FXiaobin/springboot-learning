@@ -13,11 +13,15 @@ public interface UserMapper {
 
     int updateUser(User user);
 
+    int updateUserToken(User user);
+
     int disabledUser(String userId);
 
     List<User> selectAllUserList();
 
     User selectUserByUserId(String userId);
+
+    User selectUserByUserName(String userName);
 
     List<User> selecUserByUserParamInfo(UserParamInfo userParamInfo);
 

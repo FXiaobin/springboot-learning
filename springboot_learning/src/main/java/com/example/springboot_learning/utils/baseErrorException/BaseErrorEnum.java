@@ -20,7 +20,7 @@ public enum BaseErrorEnum implements BaseErrorInterface {
     USERNAME_OR_PASSWORD_ERROR("10009", "用户名或密码错误"),
     DATA_NOT_EXSIST("10009", "数据不存在"),
     PARAMETER_PAGE_ERROR("10010", "分页参数错误"),
-
+    TOKEN_NOT_EMPTY("10011", "token不能为空"),
 
     ;   // 最后一个用分号，分号不能省略
 

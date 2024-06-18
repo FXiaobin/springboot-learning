@@ -54,7 +54,27 @@
             <version>1.4.6</version>
         </dependency>
 
-<!--    接口文档地址 http://localhost:9091/api-dev/swagger-ui/index.html-->
+
+
+        <!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
+        <dependency>
+            <groupId>com.auth0</groupId>
+            <artifactId>java-jwt</artifactId>
+            <version>4.4.0</version>
+        </dependency>
+
+        <!--        验证用户登录时传递字段是否符合要求，如账户 admin 密码 6位不为空 手机号11位等-->
+        <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+            <version>3.3.0</version>
+        </dependency>
+
+
+
+
+        <!--    接口文档地址 http://localhost:9091/api-dev/swagger-ui/index.html-->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>

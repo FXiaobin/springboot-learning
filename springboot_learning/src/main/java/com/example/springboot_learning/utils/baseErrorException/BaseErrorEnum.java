@@ -21,6 +21,12 @@ public enum BaseErrorEnum implements BaseErrorInterface {
     DATA_NOT_EXSIST("10009", "数据不存在"),
     PARAMETER_PAGE_ERROR("10010", "分页参数错误"),
     TOKEN_NOT_EMPTY("10011", "token不能为空"),
+    TOKEN_EXPIRED("10013", "token已过期"),
+    TOKEN_INVALID("10014", "token非法"),
+    TOKEN_NOT_EXSIST("10015", "token不存在"),
+    TOKEN_AUTHENTICATION_FAILURE("10016", "token认证失败，访问此资源需要完全身份验证"),
+    ACCESS_DENIED("10017", "访问被拒绝"),
+
 
     ;   // 最后一个用分号，分号不能省略
 

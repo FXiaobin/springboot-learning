@@ -97,4 +97,19 @@ public class ResponseInfo {
     }
 
 
+    /**
+     * 根据错误枚举生成错误响应信息。
+     *
+     * 该方法通过错误枚举对象生成一个包含错误代码和错误消息的响应信息对象，用于统一错误响应的格式。
+     * 错误枚举（BaseErrorEnum）提供了错误代码和错误消息的映射，使得在生成响应信息时不需要硬编码错误代码和消息。
+     *
+     * @param e 错误枚举对象，包含具体的错误代码和错误消息。
+     * @return 响应信息对象，包含错误代码、错误消息以及可能的其他字段（本方法中未设置）。
+     */
+    public static ResponseInfo responseInfoErrorEnum(BaseErrorEnum e) {
+        // 调用ResponseInfo类的静态方法生成包含错误代码、错误消息的响应信息对象
+        return ResponseInfo.responseInfo(e.getCode(), e.getMsg(), null, null);
+    }
+
+
 }

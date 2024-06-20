@@ -3,7 +3,7 @@ package com.example.springboot_learning.utils.jwtUtils;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-@Configuration
+//@Configuration
 public class InterceptorConfig implements WebMvcConfigurer {
 
     /**
@@ -27,7 +27,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .excludePathPatterns("/**/*.css")
                 .excludePathPatterns("/**/*.js")
                 .excludePathPatterns("/**/*.png")
-                .excludePathPatterns("/**/api-docs/**")     // swagger-ui.index被重定向为 /api-docs
+                .excludePathPatterns("/**/api-docs/**")     // swagger-ui.index被重定向为 /api-dev/v3/api-docs
                 .excludePathPatterns("/user/addUser")
                 .excludePathPatterns("/user/loginWithUserNamePassword")
                 .excludePathPatterns("/error")

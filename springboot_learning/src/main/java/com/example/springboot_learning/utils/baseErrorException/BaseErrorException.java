@@ -20,6 +20,11 @@ public class BaseErrorException extends RuntimeException {
         super();
     }
 
+    public BaseErrorException(String code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
     /**
      * 根据异常枚举 --> 获取自定义异常对象
      * @param baseErrorEnum 自定义异常枚举

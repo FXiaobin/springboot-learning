@@ -11,8 +11,23 @@ import java.util.Map;
 
 public class JWTUtils {
 
-
+    /**
+     * 令牌秘钥
+     */
     private static final String SECRET = "token@#$springboot_learning";
+
+    /**
+     * 用户ID字段
+     */
+    private static final String DETAILS_USER_ID = "userId";
+
+    /**
+     * 用户名字段
+     */
+    private static final String DETAILS_USERNAME = "userName";
+
+    private static final Integer Expires_Days = 30;
+
 
 
     /**
@@ -40,7 +55,7 @@ public class JWTUtils {
 
         // 获取当前日期并添加7天，设置令牌的过期时间
         Calendar instance = Calendar.getInstance();
-        instance.add(Calendar.DATE, 7);
+        instance.add(Calendar.DATE, Expires_Days);
         builder.withExpiresAt(instance.getTime());
 
         // 使用HMAC256算法和SECRET签名令牌，并返回生成的令牌字符串
@@ -63,9 +78,6 @@ public class JWTUtils {
         DecodedJWT decodedJWT = JWT.require(com.auth0.jwt.algorithms.Algorithm.HMAC256(SECRET)).build().verify(token);
         return decodedJWT;
     }
-
-
-
 
     /**
      * 根据令牌获取JWT头部信息。
@@ -104,6 +116,39 @@ public class JWTUtils {
         }
         return JWT.decode(token).getPayload();
     }
+
+    // 根据token获取claims
+    public static String getClaimsByToken(String token){
+        if (token == null) {
+            throw new BaseErrorException(BaseErrorEnum.TOKEN_NOT_EMPTY);
+        }
+        return JWT.decode(token).getClaims().toString();
+    }
+
+    // 根据token获取claims中某个key的值
+    public static String getClaimsByToken(String token, String key){
+        if (token == null) {
+            throw new BaseErrorException(BaseErrorEnum.TOKEN_NOT_EMPTY);
+        }
+        return JWT.decode(token).getClaim(key).asString();
+    }
+
+    // 根据token获取claims中userName的值
+    public static String getUserNameByToken(String token){
+        if (token == null) {
+            throw new BaseErrorException(BaseErrorEnum.TOKEN_NOT_EMPTY);
+        }
+        return JWT.decode(token).getClaim(DETAILS_USERNAME).asString();
+    }
+
+    // 根据token获取claims中userId的值
+    public static String getUserIdByToken(String token){
+        if (token == null) {
+            throw new BaseErrorException(BaseErrorEnum.TOKEN_NOT_EMPTY);
+        }
+        return JWT.decode(token).getClaim(DETAILS_USER_ID).asString();
+    }
+
 
     /**
      * 根据令牌获取签名。

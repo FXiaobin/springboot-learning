@@ -1,5 +1,6 @@
 package com.example.springboot_learning.service;
 
+import com.example.springboot_learning.model.responseInfo.ResponseInfo;
 import com.example.springboot_learning.model.user.UserInfo;
 import com.example.springboot_learning.model.user.UserParamInfo;
 import com.example.springboot_learning.model.user.UserParamLoginInfo;
@@ -25,6 +26,8 @@ public interface UserService {
     List<UserInfo> selecUserByUserParamInfo(UserParamInfo userParamInfo);
 
     UserInfo loginWithUserNamePassword(UserParamLoginInfo userParamLoginInfo);
+
+    ResponseInfo logout();
 
     int deleteUserByUserId(String userId);
 }

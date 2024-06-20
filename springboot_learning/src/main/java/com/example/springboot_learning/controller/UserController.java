@@ -98,6 +98,12 @@ public class UserController {
         return responseInfo;
     }
 
+    @Operation(summary = "用户-用户登出")
+    @RequestMapping(value = "/logout", method = RequestMethod.POST)
+    public ResponseInfo logout() {
+        return userService.logout();
+    }
+
 
     @Operation(summary = "用户-用户永久删除 慎用！！！")
     @RequestMapping(value = "/deleteUserByUserId", method = RequestMethod.DELETE)

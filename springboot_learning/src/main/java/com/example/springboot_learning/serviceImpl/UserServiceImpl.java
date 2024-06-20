@@ -1,6 +1,8 @@
 package com.example.springboot_learning.serviceImpl;
 
 import com.example.springboot_learning.mapper.UserMapper;
+import com.example.springboot_learning.model.responseInfo.ResponseInfo;
+import com.example.springboot_learning.model.user.SecurityUserDetails;
 import com.example.springboot_learning.model.user.UserInfo;
 import com.example.springboot_learning.model.user.UserParamInfo;
 import com.example.springboot_learning.model.user.UserParamLoginInfo;
@@ -11,8 +13,11 @@ import com.example.springboot_learning.utils.baseErrorException.BaseErrorExcepti
 import com.example.springboot_learning.utils.commonUtils.CommonUtils;
 import com.example.springboot_learning.utils.convertUtils.UserConvertUtils;
 import com.example.springboot_learning.utils.jwtUtils.JWTUtils;
-import jakarta.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +32,21 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
-//    @Resource
-    private BCryptPasswordEncoder  bCryptPasswordEncoder;
+    /**
+     * 这里的authenticationManager其实是SecurityConfig配置类中的
+     * @Bean public AuthenticationManager authenticationManager(){}
+     * 可以SecurityConfig配置类中的方法注释掉发现会报错
+     */
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    /**
+     * 这里的bcryptPasswordEncoder其实是SecurityConfig配置类中的
+     * @Bean public BCryptPasswordEncoder bcryptPasswordEncoder(){}
+     * 可以SecurityConfig配置类中的方法注释掉发现会报错
+     */
+    @Autowired
+    BCryptPasswordEncoder bcryptPasswordEncoder;
 
     @Override
     public int addUser(User user) {
@@ -39,7 +57,11 @@ public class UserServiceImpl implements UserService {
             throw new BaseErrorException(BaseErrorEnum.PASSWORD_NOT_EMPTY);
         }
 
-        String password = bCryptPasswordEncoder.encode(user.getPassword());
+        // 密码加密
+//        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+//        String password = passwordEncoder.encode(user.getPassword());
+
+        String password = bcryptPasswordEncoder.encode(user.getPassword());
         user.setPassword(password);
 
         user.setUserId(CommonUtils.getUUID());
@@ -127,12 +149,26 @@ public class UserServiceImpl implements UserService {
         UserParamInfo userParamInfo = new UserParamInfo();
         userParamInfo.setUserName(userParamLoginInfo.getUserName());
         userParamInfo.setPassword(userParamLoginInfo.getPassword());
-        List<User> userList = userMapper.selecUserByUserParamInfo(userParamInfo);
-        if (userList == null || userList.size() == 0) {
-            throw new BaseErrorException(BaseErrorEnum.DATA_NOT_EXSIST);
+
+        // 这里我们不再自己查询数据库 改成 SecurityUserDetailService来查询认证
+//        List<User> userList = userMapper.selecUserByUserParamInfo(userParamInfo);
+//        if (userList == null || userList.size() == 0) {
+//            throw new BaseErrorException(BaseErrorEnum.DATA_NOT_EXSIST);
+//        }
+//        User user = userList.get(0);
+
+        //AuthenticationManager authenticate 进行用户认证
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userParamLoginInfo.getUserName(), userParamLoginInfo.getPassword());
+        Authentication authentication = authenticationManager.authenticate(authenticationToken);
+        if (authentication == null) {
+            throw new BaseErrorException(BaseErrorEnum.USERNAME_OR_PASSWORD_ERROR);    // 认证失败
         }
 
-        User user = userList.get(0);
+        SecurityUserDetails userDetails = (SecurityUserDetails) authentication.getPrincipal();
+        User user = userDetails.getUser();
+        String userId = user.getUserId(); // 后面用来Redis存储的  暂时先不用
+        //把完整的用户信息存入redis userid作为key
+//        redisCache.setCacheObject("login:"+userId,loginUser);
         UserInfo userInfo = UserConvertUtils.userInfoByUser(user);
 
         Map<String, String> payload = new HashMap<>();
@@ -157,6 +193,24 @@ public class UserServiceImpl implements UserService {
         return userInfo;
     }
 
+
+    @Override
+    public ResponseInfo logout() {
+        // 获取SecurityContextHolder中存储的用户id
+        UsernamePasswordAuthenticationToken authentication =(UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        SecurityUserDetails userDetails = (SecurityUserDetails) authentication.getPrincipal();
+        User user = userDetails.getUser();
+        String userId = user.getUserId();
+        // 删除redis中的值
+//        redisCache.deleteObject("login"+userId);
+
+//        清空登出用户token
+        user.setToken(null);
+        userMapper.updateUserToken(user);
+
+        return ResponseInfo.responseInfoErrorEnum(BaseErrorEnum.OPERATION_SUCCESS);
+    }
+
     @Override
     public int deleteUserByUserId(String userId) {
         if (userId == null) {
@@ -164,4 +218,6 @@ public class UserServiceImpl implements UserService {
         }
         return userMapper.deleteUserByUserId(userId);
     }
+
+
 }

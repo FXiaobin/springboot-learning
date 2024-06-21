@@ -8,10 +8,9 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
@@ -23,6 +22,7 @@ import java.io.IOException;
 /**
  * JWT过滤器 为了在用户每次请求时验证JWT，我们需要创建一个自定义的过滤器
  */
+@Slf4j
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {
 
@@ -36,11 +36,11 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String jwtToken = null;
         if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
             jwtToken = requestTokenHeader.substring(7);
-            System.out.println(jwtToken);
+            logger.info("jwtToken: " + jwtToken);
             if (jwtToken != null && jwtToken.length() > 0) {
                 try {
                     username = JWTUtils.getUserNameByToken(jwtToken);
-                    System.out.println(username);
+                    logger.info("username: " + username);
 
                 } catch (Exception e) {
 

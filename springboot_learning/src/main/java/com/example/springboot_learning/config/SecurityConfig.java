@@ -144,7 +144,22 @@ public class SecurityConfig {
 
 //                                .anyRequest().permitAll()
                 )
-
+//                .formLogin(formLogin -> formLogin
+//
+//                        .loginPage("/login")
+//                        .loginProcessingUrl("/login")
+//                        .successHandler(myAuthenticationSuccessHandler)
+//                        .failureHandler(myAuthenticationFailureHandler)
+//                        .permitAll()
+//                )
+//                .logout(logout -> logout
+//                        .logoutUrl("/logout")
+//                        .logoutSuccessHandler(myLogoutSuccessHandler)
+//                        .permitAll()
+//                )
+//                .exceptionHandling(exceptionHandling -> exceptionHandling
+//                        .authenticationEntryPoint(authenticationEntryPointImpl)
+//                )
 
                 // 关闭session
 //        // 关闭原因：

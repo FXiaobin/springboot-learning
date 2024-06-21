@@ -68,6 +68,11 @@
             <artifactId>java-jwt</artifactId>
             <version>4.4.0</version>
         </dependency>
+        <!-- redis依賴 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
 
         <!--        验证用户登录时传递字段是否符合要求，如账户 admin 密码 6位不为空 手机号11位等-->
         <!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-validation -->

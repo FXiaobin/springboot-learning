@@ -3,6 +3,7 @@ package com.example.springboot_learning.utils.securityUtils;
 import com.example.springboot_learning.serviceImpl.SecurityUserDetailService;
 import com.example.springboot_learning.utils.baseErrorException.BaseErrorEnum;
 import com.example.springboot_learning.utils.baseErrorException.BaseErrorException;
+import com.example.springboot_learning.utils.commonUtils.CommonUtils;
 import com.example.springboot_learning.utils.jwtUtils.JWTUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -31,6 +32,9 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // 获取请求的ip地址
+        String ip = CommonUtils.getIpAddr(request);
+
         final String requestTokenHeader = request.getHeader("Authorization");
         String username = null;
         String jwtToken = null;

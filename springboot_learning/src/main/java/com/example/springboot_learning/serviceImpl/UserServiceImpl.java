@@ -133,6 +133,7 @@ public class UserServiceImpl implements UserService {
     public UserInfo selectUserByUserId(String userId) {
         logger.debug("+++ slf4j debug: selectUserByUserId = {}", userId);
         System.out.println("+++ slf4j println: selectUserByUserId = " + userId);
+
         if (userId == null) {
             throw new BaseErrorException(BaseErrorEnum.USER_ID__NOT_EMPTY);
         }

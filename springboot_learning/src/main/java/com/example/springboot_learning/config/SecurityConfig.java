@@ -119,9 +119,7 @@ public class SecurityConfig {
         return authenticationManager;
     }
 
-
-
-//  # 说明
+    //  # 说明
 //- permitAll() 代表放行该资源,该资源为公共资源 无需认证和授权可以直接访问
 //- anyRequest().authenticated() 代表所有请求,必须认证之后才能访问
 //- formLogin() 代表开启表单认证
@@ -138,28 +136,16 @@ public class SecurityConfig {
                                 .requestMatchers("/user/addUser").permitAll()
                                 .requestMatchers("/user/loginWithUserNamePassword").permitAll()
                                 .requestMatchers("/user/selectAllUserList").permitAll()
+                                .requestMatchers("/v3/api-docs").permitAll()
+                                .requestMatchers("/*/api-docs").permitAll()
+                                .requestMatchers("/api-dev/v3/api-docs").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/").permitAll()
                                 // 其它接口都要认证
-                                 .anyRequest().authenticated()
+                                .anyRequest().authenticated()
 
 //                                .anyRequest().permitAll()
                 )
-//                .formLogin(formLogin -> formLogin
-//
-//                        .loginPage("/login")
-//                        .loginProcessingUrl("/login")
-//                        .successHandler(myAuthenticationSuccessHandler)
-//                        .failureHandler(myAuthenticationFailureHandler)
-//                        .permitAll()
-//                )
-//                .logout(logout -> logout
-//                        .logoutUrl("/logout")
-//                        .logoutSuccessHandler(myLogoutSuccessHandler)
-//                        .permitAll()
-//                )
-//                .exceptionHandling(exceptionHandling -> exceptionHandling
-//                        .authenticationEntryPoint(authenticationEntryPointImpl)
-//                )
+
 
                 // 关闭session
 //        // 关闭原因：
@@ -190,6 +176,89 @@ public class SecurityConfig {
 
         return http.build();
     }
+
+
+
+
+
+
+
+//  # 说明
+//- permitAll() 代表放行该资源,该资源为公共资源 无需认证和授权可以直接访问
+//- anyRequest().authenticated() 代表所有请求,必须认证之后才能访问
+//- formLogin() 代表开启表单认证
+//  ## 注意: 放行资源必须放在所有认证请求之前!
+//
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http
+//                .cors(
+//                        Customizer.withDefaults()
+//                )
+//                .csrf(AbstractHttpConfigurer::disable)
+//                .authorizeHttpRequests(requests -> requests
+//                                .requestMatchers("/user/addUser").permitAll()
+//                                .requestMatchers("/user/loginWithUserNamePassword").permitAll()
+//                                .requestMatchers("/user/selectAllUserList").permitAll()
+////                                .requestMatchers("/banner/selectAllBannerList").permitAll()
+//                                .requestMatchers("/swagger-ui/index.html").permitAll()
+//                                .requestMatchers("/**/*.html").permitAll()
+//                                .requestMatchers("/**/*.css").permitAll()
+//                                .requestMatchers("/**.js").permitAll()
+//                                .requestMatchers("/swagger-ui/*").permitAll()
+////                                .requestMatchers("/**/api-docs/*").permitAll()
+//                                .requestMatchers(HttpMethod.GET, "/").permitAll()
+//                                // 其它接口都要认证
+//                                 .anyRequest().authenticated()
+//
+////                                .anyRequest().permitAll()
+//                )
+////                .formLogin(formLogin -> formLogin
+////
+////                        .loginPage("/login")
+////                        .loginProcessingUrl("/login")
+////                        .successHandler(myAuthenticationSuccessHandler)
+////                        .failureHandler(myAuthenticationFailureHandler)
+////                        .permitAll()
+////                )
+////                .logout(logout -> logout
+////                        .logoutUrl("/logout")
+////                        .logoutSuccessHandler(myLogoutSuccessHandler)
+////                        .permitAll()
+////                )
+////                .exceptionHandling(exceptionHandling -> exceptionHandling
+////                        .authenticationEntryPoint(authenticationEntryPointImpl)
+////                )
+//
+//                // 关闭session
+////        // 关闭原因：
+////        // 1. 前后端进行通信，每个请求都是一个独立的事务，开启session管理可能会使得信息无法共享
+////        // 2. 采用session管理的话，多个用户进行访问服务器端的内存会占用过高，这是因为session的废除机制是超时机制
+////        // 3. 采用session管理功能，这也是一个安全漏洞
+////        // 这里使用jwt（Java web token）令牌的方式进行认证，不需要session了
+//                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//
+//                /**
+//                 * 将token验证添加在密码验证前面
+//                 * 在安全配置中添加过滤器，用于在执行任何Spring Security的过滤之前处理JWT令牌。
+//                 * 这一步是必要的，因为它允许我们验证JWT令牌的有效性，并在验证成功后设置安全上下文，
+//                 * 从而让Spring Security能够基于令牌的内容做出授权决策。
+//                 *
+//                 * @param jwtRequestFilter JWT请求过滤器，负责解析JWT令牌并进行相应的安全上下文设置。
+//                 * @param usernamePasswordAuthenticationFilter Spring Security的默认用户名密码认证过滤器类，
+//                 * 用于指定过滤器的执行顺序，确保JWT请求过滤器在它之前执行。
+//                 */
+//                .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)
+//
+////                .authenticationManager(authenticationManager())
+////                .authenticationProvider(authenticationProvider())
+////                .exceptionHandling(exception -> exception.accessDeniedHandler(accessDeniedHandlerImpl))
+//                .exceptionHandling(exception -> exception.authenticationEntryPoint(authenticationEntryPointImpl))
+//                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin));
+//
+//
+//        return http.build();
+//    }
 
 
 }

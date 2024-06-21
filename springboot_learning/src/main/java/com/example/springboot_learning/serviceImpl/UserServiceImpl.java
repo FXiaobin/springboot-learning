@@ -13,6 +13,8 @@ import com.example.springboot_learning.utils.baseErrorException.BaseErrorExcepti
 import com.example.springboot_learning.utils.commonUtils.CommonUtils;
 import com.example.springboot_learning.utils.convertUtils.UserConvertUtils;
 import com.example.springboot_learning.utils.jwtUtils.JWTUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +30,11 @@ import java.util.Map;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    /**
+     * slf4j日志
+     */
+    private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     @Autowired
     private UserMapper userMapper;
@@ -124,6 +131,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserInfo selectUserByUserId(String userId) {
+        logger.debug("+++ slf4j debug: selectUserByUserId = {}", userId);
+        System.out.println("+++ slf4j println: selectUserByUserId = " + userId);
         if (userId == null) {
             throw new BaseErrorException(BaseErrorEnum.USER_ID__NOT_EMPTY);
         }

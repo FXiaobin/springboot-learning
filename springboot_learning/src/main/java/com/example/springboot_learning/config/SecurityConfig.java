@@ -128,18 +128,23 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .cors(
-                        Customizer.withDefaults()
-                )
+//                .cors(
+//                        Customizer.withDefaults()
+//                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
+                                // 允许接口文档访问 必须同时写下面两个配置
+                                .requestMatchers("/v3/api-docs/**").permitAll()
+                                .requestMatchers("/swagger-ui/**").permitAll()
+
+                                // 白名单
                                 .requestMatchers("/user/addUser").permitAll()
                                 .requestMatchers("/user/loginWithUserNamePassword").permitAll()
                                 .requestMatchers("/user/selectAllUserList").permitAll()
-                                .requestMatchers("/v3/api-docs").permitAll()
-                                .requestMatchers("/*/api-docs").permitAll()
-                                .requestMatchers("/api-dev/v3/api-docs").permitAll()
-                                .requestMatchers(HttpMethod.GET, "/").permitAll()
+
+                                // 允许所有GET请求 要用**，单个*不起作用
+                                .requestMatchers(HttpMethod.GET, "/**").permitAll()
+
                                 // 其它接口都要认证
                                 .anyRequest().authenticated()
 

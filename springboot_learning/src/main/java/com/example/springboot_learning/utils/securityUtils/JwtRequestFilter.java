@@ -32,8 +32,16 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        // get请求默认编码格式（防止中文乱码）
+        request.setCharacterEncoding("UTF-8");
+        // post请求默认编码格式（防止中文乱码）
+//        request.setAttribute("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        request.setAttribute("Content-Type", "application/json; charset=UTF-8");
+
+
         // 获取请求的ip地址
         String ip = CommonUtils.getIpAddr(request);
+        logger.info("当前请求ip: " + ip);
 
         final String requestTokenHeader = request.getHeader("Authorization");
         String username = null;

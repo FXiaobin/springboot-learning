@@ -74,7 +74,7 @@ public class BannerController {
     }
 
     @Operation(summary = "轮播图-查询所有轮播图")
-    @RequestMapping(value = "/selectAllBannerList", method = RequestMethod.POST)
+    @RequestMapping(value = "/selectAllBannerList", method = RequestMethod.GET)
     public ResponseInfo selectAllBannerList(PageParamsInfo pageParamsInfo) {
 //        PageInfo<Banner> pageInfo =
 //        List<BannerInfo> bannerInfoList = BannerConvertUtils.bannerInfoListByBannerList(pageInfo.getList());

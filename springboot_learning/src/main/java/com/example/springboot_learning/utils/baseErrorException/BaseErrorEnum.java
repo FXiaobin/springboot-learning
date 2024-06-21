@@ -7,6 +7,7 @@ public enum BaseErrorEnum implements BaseErrorInterface {
 
     OPERATION_SUCCESS("200", "操作成功"),
     NOT_FOUND("404", "访问资源不存在"),
+    REQUEST_METHOD_ERROR("405", "请求方式错误"),
     INTERNAL_SERVER_ERROR("500", "服务器内部错误"),
     OPERATION_FAIL("10000", "操作失败"),
     ID_IS_EMPTY("10001", "id不能为空"),
